@@ -11,19 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class GudangController extends Controller
 {
-    // print data barang
-    // public function print()
-    // {
-    //     $gudangs = DB::table('gudangs')->get();
-    //     $pdf = PDF::loadview('admin.gudang', ['gudangs' => $gudangs]);
-    //     return $pdf->download('laporan-gudang.pdf');
-    // }
-    //menampilkan data gudang
+
     function index()
     {
-        // return view('admin.gudang.gudang', [
-        //     'gudangs' => gudang::all()
-        // ]);
         $gudangs = DB::table('gudangs')->paginate(10);
         return view('admin.gudang.gudang', ['gudangs' => $gudangs]);
     }

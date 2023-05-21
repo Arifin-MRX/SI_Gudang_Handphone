@@ -4,6 +4,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\registerController;
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -35,147 +36,189 @@ Route::get('/login/register', [registerController::class, 'index'])->name('regis
 Route::post('/login/register/actionregister', [registerController::class, 'actionregister'])->name('actionregister');
 
 // bagian admin
-Route::group(['middleware'=> ['admin']],function(){
+Route::group(['middleware' => ['IsAdmin']], function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+    // Bagian Gudang
+    Route::controller(GudangController::class)->group(function () {
+        Route::get('/admin/gudang', 'index')->name('gudang');
+        Route::post('/admin/gudang/create', 'create')->name('gudang.create');
+        Route::get('/admin/gudang/edit/{id}', 'edit')->name('gudang.edit');
+        Route::put('/admin/gudang/update', 'update')->name('gudang.update');
+        Route::get('/admin/gudang/delete/{id}', 'delete')->name('gudang.delete');
+        Route::get('/admin/gudang/search', 'search')->name('gudang.search');
+    });
 
+    // Bagian Kategori
+    Route::controller(KategoriController::class)->group(function () {
+        Route::get('/admin/kategori', 'index')->name('kategori');
+        Route::post('/admin/kategori/create', 'create')->name('kategori.create');
+        Route::get('/admin/kategori/edit/{id}', 'edit')->name('kategori.edit');
+        Route::put('/admin/kategori/update', 'update')->name('kategori.update');
+        Route::get('/admin/kategori/delete/{id}', 'delete')->name('kategori.delete');
+        Route::get('/admin/kategori', 'search')->name('kategori.search');
+    });
+
+    // Bagian Barang
+    Route::controller(BarangController::class)->group(function () {
+        Route::get('/admin/Databarang', 'index')->name('barang');
+        Route::post('/admin/Databarang/create', 'create')->name('barang.create');
+        Route::get('/admin/Databarang/edit/{id}', 'edit')->name('barang.edit');
+        Route::put('/admin/Databarang/update', 'update')->name('barang.update');
+        Route::get('/admin/Databarang/delete/{id}', 'delete')->name('barang.delete');
+        Route::get('/admin/Databarang', 'search')->name('barang.search');
+
+    });
+    // Route::get('/admin/barang', [BarangController::class, 'index'])->name('barang');
+    // Route::get('/admin/barang', [BarangController::class, 'search'])->name('barangsearch');
+
+
+    Route::get('/admin/barangMasuk', function () {
+        return view('admin.sirkulasiBarang.barangMasuk');
+    })->name('barangMasuk');
+    Route::get('/admin/barangKeluar', function () {
+        return view('admin.sirkulasiBarang.barangKeluar');
+    })->name('barangKeluar');
 });
 
 
+// // // Bagian --admin---
+// Route::get('/admin/dashboard', function () {
+//     return view('admin.dashboard');
+// });
 // // Bagian --admin---
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-});
-// Bagian --admin---
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
+// Route::get('/admin', function () {
+//     return view('admin.dashboard');
+// });
 
 
-// Bagian Gudang
-// menmapilkan data gudang
-Route::get('admin/gudang', [GudangController::class, 'index']);
-// menambahkan data gudang
-Route::post('admin/gudang', [GudangController::class, 'create'])->name('gudang.create');
-// edit data gudang
-Route::get('admin/gudang/{id}', [GudangController::class, 'edit'])->name('gudang.edit');
-// update data gudang
-Route::put('admin/gudang', [GudangController::class, 'update'])->name('gudang.update');
-// delete data gudang
-Route::get('admin/gudang/delete/{id}', [GudangController::class, 'delete'])->name('gudang.delete');
-// cari data gudang
-Route::get('admin/gudang', [GudangController::class, 'search']);
+// // Bagian Gudang
+// // menmapilkan data gudang
+// Route::get('admin/gudang', [GudangController::class, 'index']);
+// // menambahkan data gudang
+// Route::post('admin/gudang', [GudangController::class, 'create'])->name('gudang.create');
+// // edit data gudang
+// Route::get('admin/gudang/{id}', [GudangController::class, 'edit'])->name('gudang.edit');
+// // update data gudang
+// Route::put('admin/gudang', [GudangController::class, 'update'])->name('gudang.update');
+// // delete data gudang
+// Route::get('admin/gudang/delete/{id}', [GudangController::class, 'delete'])->name('gudang.delete');
+// // cari data gudang
+// Route::get('admin/gudang', [GudangController::class, 'search']);
 
-// Bagian Rute admin
-Route::get('/admin/rute', function () {
-    return view('admin.rute.rute');
-})->name('rute');
+// // Bagian Rute admin
+// Route::get('/admin/rute', function () {
+//     return view('admin.rute.rute');
+// })->name('rute');
 
-// Bagian Kategori ->admin
-// menampilkan data kateori
-Route::get('/admin/kategori', [KategoriController::class, 'index']);
-// menambah kategori
-Route::post('/admin/kategori', [KategoriController::class, 'create'])->name('kategori.create');
-// edit kategori
-Route::post('/admin/kategori/{id}', [kategoricontroller::class, 'edit'])->name('kategori.edit');
-// update kategori
-Route::put('/admin/kategori', [kategoricontroller::class, 'update'])->name('kategori.update');
-// delete kategori
-Route::get('/admin/kategori/delete/{id}', [KategoriController::class, 'delete'])->name('kategori.delete');
-// cari data kategori
-Route::get('/admin/kategori', [KategoriController::class, 'search']);
+// // Bagian Kategori ->admin
+// // menampilkan data kateori
+// Route::get('/admin/kategori', [KategoriController::class, 'index']);
+// // menambah kategori
+// Route::post('/admin/kategori', [KategoriController::class, 'create'])->name('kategori.create');
+// // edit kategori
+// Route::post('/admin/kategori/{id}', [kategoricontroller::class, 'edit'])->name('kategori.edit');
+// // update kategori
+// Route::put('/admin/kategori', [kategoricontroller::class, 'update'])->name('kategori.update');
+// // delete kategori
+// Route::get('/admin/kategori/delete/{id}', [KategoriController::class, 'delete'])->name('kategori.delete');
+// // cari data kategori
+// Route::get('/admin/kategori', [KategoriController::class, 'search']);
 
-// Bagian Data Barang
-Route::get('/admin/barang', function () {
-    return view('admin.barang.Databarang');
-})->name('dataBarang');
-// bagaian sirkulasi barang
-Route::get('/admin/barangKeluar', function () {
-    return view('admin.sirkulasiBarang.barangKeluar');
-})->name('barangKeluar');
-Route::get('/admin/barangMasuk', function () {
-    return view('admin.sirkulasiBarang.barangMasuk');
-})->name('barangMasuk');
+// // Bagian Data Barang
+// Route::get('/admin/barang', function () {
+//     return view('admin.barang.Databarang');
+// })->name('dataBarang');
+// // bagaian sirkulasi barang
+// Route::get('/admin/barangKeluar', function () {
+//     return view('admin.sirkulasiBarang.barangKeluar');
+// })->name('barangKeluar');
+// Route::get('/admin/barangMasuk', function () {
+//     return view('admin.sirkulasiBarang.barangMasuk');
+// })->name('barangMasuk');
 
-// Bagian Data Outlet
-Route::get('/admin/outlet', function () {
-    return view('admin.dataPengguna.outlet.Dataoutlet');
-})->name('dataoutlet');
+// // Bagian Data Outlet
+// Route::get('/admin/outlet', function () {
+//     return view('admin.dataPengguna.outlet.Dataoutlet');
+// })->name('dataoutlet');
 
-// Bagian Data Supir
-Route::get('/admin/Datasupir', function () {
-    return view('admin.dataPengguna.supir.Datasupir');
-})->name('datasupir');
+// // Bagian Data Supir
+// Route::get('/admin/Datasupir', function () {
+//     return view('admin.dataPengguna.supir.Datasupir');
+// })->name('datasupir');
 
-// Bagian Pegawai
-Route::get('/admin/pegawai', function () {
-    return view('admin.dataPengguna.pegawai.Datapegawai');
-})->name('datapegawai');
-// Bagian Pegawai ->hak akses
-Route::get('/admin/hakAkses', function () {
-    return view('admin.dataPengguna.hakakses.hakAkses');
-})->name('hakakses');
+// // Bagian Pegawai
+// Route::get('/admin/pegawai', function () {
+//     return view('admin.dataPengguna.pegawai.Datapegawai');
+// })->name('datapegawai');
+// // Bagian Pegawai ->hak akses
+// Route::get('/admin/hakAkses', function () {
+//     return view('admin.dataPengguna.hakakses.hakAkses');
+// })->name('hakakses');
 
-// Bagian Penerimaan Barang
-Route::get('/admin/penerimaanbarang', function () {
-    return view('admin.penerimaanBarang.penerimaanbarang');
-})->name('penerimaanbarang');
+// // Bagian Penerimaan Barang
+// Route::get('/admin/penerimaanbarang', function () {
+//     return view('admin.penerimaanBarang.penerimaanbarang');
+// })->name('penerimaanbarang');
 
-// Bagian Pengiriman
-Route::get('/admin/pengiriman', function () {
-    return view('admin.Pengiriman.pengiriman');
-})->name('pengiriman');
+// // Bagian Pengiriman
+// Route::get('/admin/pengiriman', function () {
+//     return view('admin.Pengiriman.pengiriman');
+// })->name('pengiriman');
 
-// Bagian Pemesanan
-Route::get('/admin/pemesanan', function () {
-    return view('admin.Pemesanan.pemesanan');
-})->name('pemesanan');
-// Bagian jadwalpengiriman
-Route::get('/admin/jadwalpengiriman', function () {
-    return view('admin.jadwalpengiriman.jadwalpengiriman');
-})->name('jadwalpengiriman');
+// // Bagian Pemesanan
+// Route::get('/admin/pemesanan', function () {
+//     return view('admin.Pemesanan.pemesanan');
+// })->name('pemesanan');
+// // Bagian jadwalpengiriman
+// Route::get('/admin/jadwalpengiriman', function () {
+//     return view('admin.jadwalpengiriman.jadwalpengiriman');
+// })->name('jadwalpengiriman');
 
-// Bagian truk
-Route::get('/admin/truk', function () {
-    return view('admin.Truck.truk');
-})->name('truk');
+// // Bagian truk
+// Route::get('/admin/truk', function () {
+//     return view('admin.Truck.truk');
+// })->name('truk');
 
-// Bagian Pegawai
-Route::get('/pegawai', function () {
-    return view('pegawai.dashboard');
-});
-Route::get('/pegawai/dashboard', function () {
-    return view('pegawai.dashboard');
-});
+// // Bagian Pegawai
+// Route::get('/pegawai', function () {
+//     return view('pegawai.dashboard');
+// });
+// Route::get('/pegawai/dashboard', function () {
+//     return view('pegawai.dashboard');
+// });
 
-// Bagian Outlet
-// menampilkan dashboard outlet
-Route::get('/outlet/dashboard', function () {
-    return view('outlet.dashboard');
-})->name('dashboard');
-// menampilkan stok barang
-Route::get('/outlet/stokbarang', function () {
-    return view('outlet.Barang.stokbarang');
-})->name('stokbarang');
-// bagian pemesanan
-Route::get('/outlet/pemesanan', function () {
-    return view('outlet.Pemesanan.pemesanan');
-})->name('pemesanan');
-// Bagian penerimaan barang
-Route::get('/outlet/penerimaanbarang', function () {
-    return view('outlet.penerimaanBarang.penerimaanbarang');
-})->name('penerimaanbarang');
+// // Bagian Outlet
+// // menampilkan dashboard outlet
+// Route::get('/outlet/dashboard', function () {
+//     return view('outlet.dashboard');
+// })->name('dashboard');
+// // menampilkan stok barang
+// Route::get('/outlet/stokbarang', function () {
+//     return view('outlet.Barang.stokbarang');
+// })->name('stokbarang');
+// // bagian pemesanan
+// Route::get('/outlet/pemesanan', function () {
+//     return view('outlet.Pemesanan.pemesanan');
+// })->name('pemesanan');
+// // Bagian penerimaan barang
+// Route::get('/outlet/penerimaanbarang', function () {
+//     return view('outlet.penerimaanBarang.penerimaanbarang');
+// })->name('penerimaanbarang');
 
-// Bagian supir
-Route::get('/supir', function () {
-    return view('supir.dashboard');
-});
-Route::get('/supir/dashboard', function () {
-    return view('supir.dashboard');
-});
-// Bagian pengiriman
-Route::get('/supir/pengiriman', function () {
-    return view('supir.Pengiriman.pengiriman');
-})->name('pengiriman');
-// Bagian rute
-Route::get('/supir/rute', function () {
-    return view('supir.Rute.rute');
-})->name('rute');
+// // Bagian supir
+// Route::get('/supir', function () {
+//     return view('supir.dashboard');
+// });
+// Route::get('/supir/dashboard', function () {
+//     return view('supir.dashboard');
+// });
+// // Bagian pengiriman
+// Route::get('/supir/pengiriman', function () {
+//     return view('supir.Pengiriman.pengiriman');
+// })->name('pengiriman');
+// // Bagian rute
+// Route::get('/supir/rute', function () {
+//     return view('supir.Rute.rute');
+// })->name('rute');

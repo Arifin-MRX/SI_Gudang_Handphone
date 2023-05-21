@@ -5,7 +5,7 @@
             <div class="col border rounded p-5 ">
                 <h3 class="my-3 text-center ">DATA Kategori</h3>
                 <p>Cari Data Kategori:</p>
-                <form class="d-flex" action="/admin/kategori" method="GET">
+                <form class="d-flex" action="{{route('kategori.search')}}" method="GET">
                     <input class=" form-control" type="text" name="search" placeholder="Cari Kategori .."
                         value="{{ old('search') }}">
                     <input type="submit" value="search" class="btn btn-outline-primary mx-2">

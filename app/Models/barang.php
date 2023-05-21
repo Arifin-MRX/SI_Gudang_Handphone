@@ -8,4 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class barang extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nama_barang',
+        'harga',
+        'satuan',
+        'kategori_id',
+        'gudang_id',
+        'stok_awal',
+        'stok_akhir',
+        'stok_masuk',
+        'stok_keluar'
+    ];
+
+    public function kategoris()
+    {
+        return $this->belongsTo(kategori::class, 'kategori_id');
+    }
+    public function gudangs()
+    {
+        return $this->belongsTo(gudang::class, 'gudang_id');
+    }
 }

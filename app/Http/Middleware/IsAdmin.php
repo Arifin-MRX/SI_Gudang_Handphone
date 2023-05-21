@@ -15,7 +15,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->pegawai_id != 1) {
+        if (auth()->user()->pegawai_id == 1) {
             return $next($request);
         } else {
             return redirect()->back();

@@ -12,5 +12,9 @@ class gudang extends Model
         'nama_gudang',
         'alamat',
     ];
+    public function barangs()
+    {
+        return $this->hasMany(barang::class);
+    }
 
 }
