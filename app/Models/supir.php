@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class supir extends Model
 {
     use HasFactory;
+    protected $table = 'supirs';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'status',
+        'id_pengguna'
+    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_pengguna', 'id');
+    }
+    
 }

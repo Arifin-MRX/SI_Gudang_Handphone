@@ -11,7 +11,7 @@
 
 <body>
     <section class="hero m-0 d-flex align-content-center  "
-        style="background-image: url(../assets//bg.jpg);min-height: 100vh;  background-repeat: no-repeat; background-size: cover;background-position: center; ">
+        style="background-color:rgb(216, 216, 241);min-height: 100vh;  background-repeat: no-repeat; background-size: cover;background-position: center; ">
         <form action="{{url('login/proses')}}" method="POST" class="bg-light p-4 rounded m-auto" style="--bs-bg-opacity: .5; margin-bottom:500px;">
             @csrf
             <h1 class="mb-4 text-center">Log In</h1>

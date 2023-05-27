@@ -13,4 +13,9 @@ class pegawai extends Model
     protected $fillable = [
         'hakakses'
     ];
+    // membuat relasi one to many dengan tabel user
+    public function users()
+    {
+        return $this->hasMany(User::class, 'pegawai_id', 'id');
+    }
 }

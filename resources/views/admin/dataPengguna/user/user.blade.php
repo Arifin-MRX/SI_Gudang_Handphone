@@ -3,16 +3,16 @@
     <div class="container">
         <div class="tb-gudang  ">
             <div class="col border rounded p-2 ">
-                <h3 class="my-3 text-center ">DATA OUTLET</h3>
-                <p>Cari Data Outlet:</p>
-                <form class="d-flex" action="{{ route('outlet.search') }}" method="GET">
-                    <input class=" form-control" type="text" name="search" placeholder="Cari Outlet .."
+                <h3 class="my-3 text-center ">DATA PENGGUNA</h3>
+                <p>Cari Data Pengguna:</p>
+                <form class="d-flex" action="{{route('pengguna.search')}}" method="GET">
+                    <input class=" form-control" type="text" name="search" placeholder="Cari Pengguna .."
                         value="{{ old('search') }}">
                     <input type="submit" value="search" class="btn btn-outline-primary mx-2">
                 </form>
                 <button type="button" class="btn btn-outline-primary my-4 mx-3 "data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
-                    <i class="bi bi-person-add"></i> Tambah Outlet</a>
+                    <i class="bi bi-person-add"></i> Tambah User</a>
                 </button>
                 <button type="button" class="btn btn-outline-danger">
                     <i class="bi bi-filetype-pdf"></i>
@@ -24,37 +24,34 @@
                         <thead class="table-primary">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Nama </th>
+                                <th scope="col">Nama Pengguna</th>
+                                {{-- <th scope="col">Username</th> --}}
+                                <th scope="col">Email </th>
                                 <th scope="col">Alamat </th>
                                 <th scope="col">Telepon </th>
+                                <th scope="col">Status </th>
                                 <th scope="col">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($outlet as $index => $data)
-                                @if ($outlet->isEmpty())
-                                    <tr>
-                                        <td colspan="7" class="text-center">Data tidak ditemukan.</td>
-                                    </tr>
-                                @endif
+                            @foreach ($pengguna as $item)
                                 <tr>
-                                    <th scope="row">{{ $index + 1 }}</th>
-                                    <td>{{ $data->user->username }}</td>
-                                    <td>{{ $data->user->email }}</td>
-                                    <td>{{ $data->user->nama_pengguna }}</td>
-                                    <td>{{ $data->user->alamat }}</td>
-                                    <td>{{ $data->user->tlp }}</td>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $item->nama_pengguna }}</td>
+                                    {{-- <td> {{ $item->username }}</td> --}}
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->alamat }}</td>
+                                    <td>{{ $item->tlp }}</td>
+                                    <td>{{ $item->status }}</td>
                                     <td>
                                         <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModalEdit{{ $data->id }}">
+                                            data-bs-target="#exampleModalEdit{{ $item->id }}">
                                             <a class="text-decoration-none text-black" href="#">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                         </button>
                                         <!-- Modal Edit start-->
-                                        <div class="modal fade" id="exampleModalEdit{{ $data->id }}" tabindex="-1"
+                                        <div class="modal fade" id="exampleModalEdit{{ $item->id }}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -63,39 +60,53 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('pengguna.update') }}" method="POST">
+                                                    <form action="{{route('pengguna.update')}}" method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $data->id }}">
+                                                        <input type="hidden" name="id" value="{{$item->id}}">
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="nama_pengguna" class="form-label">Masukkan
                                                                     Pengguna</label>
                                                                 <input type="text" name="nama_pengguna"
                                                                     class="form-control" id="nama_pengguna"
-                                                                    value="{{ $data->user->nama_pengguna }}">
+                                                                    value="{{ $item->nama_pengguna }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="alamat" class="form-label">Masukkan
                                                                     alamat</label>
                                                                 <input type="text" name="alamat" class="form-control"
-                                                                    id="alamat" value="{{ $data->user->alamat }}">
+                                                                    id="alamat" value="{{ $item->alamat }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="username" class="form-label">Masukkan
                                                                     Username</label>
                                                                 <input type="text" name="username" class="form-control"
-                                                                    id="username" value="{{ $data->user->username }}">
+                                                                    id="username" value="{{ $item->username }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="tlp" class="form-label">Masukkan Nomor
                                                                     Hp</label>
                                                                 <input type="text" name="tlp" class="form-control"
-                                                                    id="tlp" value="{{ $data->user->tlp }}">
+                                                                    id="tlp" value="{{ $item->tlp }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="email" class="form-label">Email</label>
                                                                 <input type="Email" name="email" class="form-control"
-                                                                    id="email" value="{{ $data->user->email }}">
+                                                                    id="email" value="{{ $item->email }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="pegawai_id" class="form-label">Masukkan
+                                                                    Hak Akses</label>
+                                                                <select name="pegawai_id" id="pegawai_id"
+                                                                    class="form-control">
+                                                                    <option value="{{ $item->pegawai_id }}">
+                                                                        {{ $item->pegawai->hakakses }}</option>
+                                                                    <option> Pilih Hak Akses</option>
+                                                                    @foreach ($hakAkses as $k)
+                                                                        <option value="{{ $k->id }}">
+                                                                            {{ $k->hakakses }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -110,8 +121,7 @@
                                         </div>
                                         <!-- Modal Edit end -->
                                         <button type="button" class="btn btn-outline-danger">
-                                            <a class="text-decoration-none text-black"
-                                                href="{{ route('outlet.delete', ['id_pengguna' => $data->id_pengguna]) }}">
+                                            <a class="text-decoration-none text-black" href="{{route('pengguna.delete',['id'=>$item->id])}}">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </button>
@@ -121,30 +131,46 @@
                         </tbody>
                     </table>
                 </div>
-                {{ $outlet->links('pagination::bootstrap-5') }}
+                {{ $pengguna->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
-    <!-- Modal tambah oulet start -->
+    <!-- Modal tambah start-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Outlet</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('outlet.create') }}" method="POST">
-                    @csrf
+                <form action="{{ route('pengguna.create') }}" method="POST">
+                    {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="id_pengguna" class="form-label">Konfirmasi Outlet</label>
-                            <select name="id_pengguna" id="id_pengguna" class="form-control">
-                                <option> Pilih Outlet</option>
-                                @foreach ($hakAkses as $pengguna)
-                                    <option value="{{ $pengguna->id }}">{{ $pengguna->nama_pengguna }}</option>
-                                @endforeach
-                            </select>
+                            <label for="nama_pengguna" class="form-label">Masukkan Pengguna</label>
+                            <input type="text" name="nama_pengguna" class="form-control" id="nama_pengguna">
                         </div>
+                        <div class="mb-3">
+                            <label for="alamat" class="form-label">Masukkan alamat</label>
+                            <input type="text" name="alamat" class="form-control" id="alamat">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Masukkan Username</label>
+                            <input type="text" name="username" class="form-control" id="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tlp" class="form-label">Masukkan Nomor Hp</label>
+                            <input type="text" name="tlp" class="form-control" id="tlp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="Email" name="email" class="form-control" id="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="text" name="password" class="form-control" id="password">
+                        </div>
+                        <input type="hidden" name="pegawai_id" value="5">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -154,5 +180,5 @@
             </div>
         </div>
     </div>
-    <!-- Modal tambah outlet end -->
+    <!-- Modal tambah end -->
 @endsection

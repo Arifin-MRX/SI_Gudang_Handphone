@@ -1,9 +1,5 @@
 @extends('admin.master')
 @section('content')
-    {{-- @php
-        use Illuminate\Support\Facades\DB;
-    @endphp --}}
-
     <div class="container">
         <div class="tb-gudang  ">
             <div class="col border rounded p-2 ">
@@ -14,8 +10,6 @@
                         value="{{ old('search') }}">
                     <input type="submit" value="search" class="btn btn-outline-primary mx-2">
                 </form>
-                {{-- <a href="#" class="btn btn-primary  mb-4 mt-4">+ Tambah Data Gudang </a> --}}
-                <!-- Button trigger modal -->
                 <button type="button" class="btn btn-outline-primary my-4" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
                     <i class="bi bi-bag-plus-fill"></i> Tambah Barang
@@ -24,6 +18,7 @@
                     <i class="bi bi-filetype-pdf"></i>
                     Export PDF
                 </button>
+                @include('kebutuhan.alert')
                 <div class="table-responsive">
                     <table class="table ">
                         <thead class="table-primary">
@@ -34,14 +29,16 @@
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Kategori</th>
                                 <th scope="col">Gudang</th>
-                                {{-- <th scope="col">Stok Awal</th>
-                                <th scope="col">Stok Masuk</th>
-                                <th scope="col">Stok Keluar</th> --}}
                                 <th scope="col">Jumlah Stok</th>
                                 <th scope="col">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($barangs->isEmpty())
+                                <tr>
+                                    <td colspan="8" class="text-center">Data tidak ditemukan.</td>
+                                </tr>
+                            @endif
                             @foreach ($barangs as $b)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
@@ -128,34 +125,6 @@
                                                                 <input type="text" class="form-control" id="satuan"
                                                                     name="satuan" value="{{ $b->satuan }}">
                                                             </div>
-                                                            {{-- <div class="mb-3">
-                                                                <label for="stok_awal" class="form-label">Stok
-                                                                    awal</label>
-                                                                <input type="text" class="form-control" id="stok_awal"
-                                                                    name="stok_awal" value="{{ $b->stok_awal }}">
-                                                            </div> --}}
-                                                            {{-- <div class="mb-3">
-                                                                <label for="stok_masuk" class="form-label">Stok
-                                                                    masuk</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="stok_masuk" name="stok_masuk"
-                                                                    value="{{ $b->stok_masuk }}" readonly>
-                                                            </div> --}}
-                                                            {{-- <div class="mb-3">
-                                                                <label for="stok_keluar" class="form-label">Stok
-                                                                    keluar</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="stok_keluar" name="stok_keluar"
-                                                                    value="{{ $b->stok_keluar }}" readonly>
-                                                            </div> --}}
-                                                            {{-- <div class="mb-3">
-                                                                <label for="stok_akhir" class="form-label">Stok
-                                                                    Akhir</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="stok_akhir" name="stok_akhir"
-                                                                    value="{{ $b->stok_akhir }}" readonly>
-                                                            </div> --}}
-
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Close</button>
@@ -320,9 +289,6 @@
                         <div class="mb-3">
                             <label for="harga" class="form-label">Masukkan Harga</label>
                             <input type="text" class="form-control" id="harga" name="harga">
-                            @if ($errors->has('harga'))
-                                <span class="text-danger">{{ $errors->first('harga') }}</span>
-                            @endif
                         </div>
                         <div class="mb-3">
                             <label for="satuan" class="form-label">Masukkan Satuan</label>
@@ -331,9 +297,6 @@
                         <div class="mb-3">
                             <label for="stok_awal" class="form-label">Masukkan Stok Awal</label>
                             <input type="text" class="form-control" id="stok_awal" name="stok_awal">
-                            @if ($errors->has('stok_awal'))
-                                <span class="text-danger">{{ $errors->first('stok_awal') }}</span>
-                            @endif
                         </div>
                         {{-- hidden --}}
                         <input type="hidden" name="stok_masuk" value="0">

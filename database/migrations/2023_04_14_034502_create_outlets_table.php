@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('outlets', function (Blueprint $table) {
             $table->id();
-            $table->String('nama_outlet');
-            $table->text('alamat');
-            $table->String('tlp');
+            $table->String('nama_outlet')->nullable();
+            $table->text('alamat')->nullable();
+            $table->String('tlp')->nullable();
             $table->unsignedBigInteger('id_pengguna');
             $table->foreign('id_pengguna')->references('id')->on('users');
             $table->timestamps();

@@ -6,14 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    {{-- icons --}}
-    <link rel="stylesheet" href="../fontawesome/css/all.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    {{-- select --}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
-
+    @include('kebutuhan.link')
 </head>
 
 <body>
@@ -75,10 +68,21 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="/admin/Datasupir">
+                                    <a class="dropdown-item" href="/admin/supir">
                                         <i class="fa-solid fa-user-nurse fa-beat"></i>
                                         <span class="fs-6 ms-3 d-none d-sm-inline">
                                             Data Supir
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/admin/pengguna">
+                                        <i class="bi bi-people-fill"></i>
+                                        <span class="fs-6 ms-3 d-none d-sm-inline">
+                                            Data Pengguna
                                         </span>
                                     </a>
                                 </li>
@@ -114,7 +118,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('barangMasuk') }}">
+                                    <a class="dropdown-item" href="/admin/barangMasuk">
                                         <i class="bi bi-journal-plus"></i>
                                         <span>
                                             Barang Masuk
@@ -122,7 +126,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('barangKeluar') }}">
+                                    <a class="dropdown-item" href="/admin/barangKeluar">
                                         <i class="bi bi-journal-minus"></i>
                                         <span>
                                             Barang Keluar
@@ -200,11 +204,11 @@
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle pr-4" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    Moh Harifin
+                    {{ Auth::user()->nama_pengguna }}
                 </a>
                 <ul class="dropdown-menu p-4 ">
-                    <li><a class="dropdown-item rounded" href="#"><i class="fa-solid fa-user m-2"></i>
-                            Profil</a></li>
+                    {{-- <li><a class="dropdown-item rounded" href="#"><i class="fa-solid fa-user m-2"></i>
+                            Profil</a></li> --}}
                     <li><a class="dropdown-item rounded" href="#"><i
                                 class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
                 </ul>
@@ -217,38 +221,7 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-    </script>
-    {{-- <script>
-        $('#modal2').on('show.bs.modal', function() {
-            setTimeout(function() {
-                $('#modal1').css('z-index', 1);
-                $('#modal2').css('z-index', 2);
-            }, 500);
-        });
-
-        $('#modal2').on('hidden.bs.modal', function() {
-            $('#modal1').css('z-index', 2);
-            $('#modal2').css('z-index', 1);
-        });
-    </script> --}}
-
-    {{-- javascript select --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="
-    https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js
-    "></script>
-    
-
-
-    {{-- link jax  --}}
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-
+    @include('kebutuhan.script')
 </body>
 
 </html>

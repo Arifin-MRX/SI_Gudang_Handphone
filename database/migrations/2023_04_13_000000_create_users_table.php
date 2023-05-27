@@ -19,6 +19,7 @@ return new class extends Migration
             $table->String('alamat');
             $table->String('tlp')->nullable();
             $table->String('email');
+            $table->String('status');
             $table->unsignedBigInteger('pegawai_id')->nullable();
             $table->foreign('pegawai_id')->references('id')->on('pegawais');
             $table->timestamps();

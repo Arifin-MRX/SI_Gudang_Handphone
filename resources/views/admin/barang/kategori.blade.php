@@ -15,6 +15,7 @@
                     <i class="bi bi-bookmark-plus-fill"></i>
                     Tambah Data Kategori
                 </button>
+                @include('kebutuhan.alert')
                 <table class="table ">
                     <thead class="table-primary">
                         <tr>
@@ -24,6 +25,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($kategoris->isEmpty())
+                                <tr>
+                                    <td colspan="3" class="text-center">Data tidak ditemukan.</td>
+                                </tr>
+                            @endif
                         @foreach ($kategoris as $k)
                             <tr>
                                 <td scope="row">{{ $loop->iteration }}</td>

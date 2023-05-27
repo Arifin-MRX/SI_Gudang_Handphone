@@ -26,7 +26,8 @@ class User extends Authenticatable
         'alamat',
         'email',
         'password',
-        'pegawai_id'
+        'pegawai_id',
+        'status'
     ];
 
     /**
@@ -51,4 +52,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(pegawai::class, 'pegawai_id', 'id');
     }
+
+    
 }

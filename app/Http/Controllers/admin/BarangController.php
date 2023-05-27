@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\barang;
 use App\Models\gudang;
 use App\Models\kategori;
@@ -34,17 +35,23 @@ class BarangController extends Controller
     // Menambahkan data Barang
     function create(Request $request)
     {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
+        // membuat pesan validasi
+        $messages = [
+            'required' => ':attribute wajib diisi',
+            'min' => ':attribute minimal :min karakter',
+            'numeric' => ':attribute harus berupa angka'
+        ];
+        // validasi data
+        $this->validate($request, [
+            'nama_barang' => 'required|min:3',
+            'harga' => 'required|numeric',
+            'satuan' => 'required',
+            'kategori_id' => 'required',
+            'gudang_id' => 'required',
             'stok_awal' => 'required|numeric',
-            'harga' => 'required|numeric'
-        ]);
-
-        // Cek validasi
-        if ($validator->fails()) {
-            return redirect('/admin/Databarang')->withErrors($validator)->withInput();
-        }
-
+            'stok_masuk' => 'required|numeric',
+            'stok_keluar' => 'required|numeric',
+        ], $messages);
         $barangs = new barang(
             [
                 'nama_barang' => request('nama_barang'),
@@ -59,7 +66,7 @@ class BarangController extends Controller
             ]
         );
         $barangs->save();
-        return redirect('/admin/Databarang')->with('pesan', 'Data Berhasil Ditambahkan');
+        return redirect('/admin/Databarang')->with('success', 'Data Berhasil Ditambahkan');
     }
 
     // Mencaari data Barang
@@ -80,34 +87,28 @@ class BarangController extends Controller
     function delete($id)
     {
         $barangs = barang::find($id);
+        // Hapus semua data sirkulasi barang terkait
+        $barangs->sirkulasi_barangs()->delete();
         $barangs->delete();
-        return redirect('/admin/Databarang')->with('pesan', 'Data Berhasil Dihapus');
+        return redirect('/admin/Databarang')->with('delete', 'Data Berhasil Dihapus');
     }
-    // Mengedit data Barang
-    function edit($id)
-    {
-        $barangs = barang::find($id);
-        $kategoris = kategori::all();
-        $gudangs = gudang::all();
-        $data = [
-            'barangs' => $barangs,
-            'kategoris' => $kategoris,
-            'gudangs' => $gudangs
-        ];
-        return view('admin.barang.Databarang', $data);
-    }
-    // Mengupdate data Barang
     function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'stok_awal' => 'required|numeric',
-            'harga' => 'required|numeric'
-        ]);
-
-        // Cek validasi
-        if ($validator->fails()) {
-            return redirect('/admin/Databarang')->withErrors($validator)->withInput();
-        }
+        // membuat pesan validasi
+        $messages = [
+            'required' => ':attribute wajib diisi',
+            'min' => ':attribute minimal :min karakter',
+            'max' => ':attribute maksimal :max karakter',
+            'numeric' => ':attribute harus berupa angka'
+        ];
+        // validasi data
+        $this->validate($request, [
+            'nama_barang' => 'required|min:5',
+            'harga' => 'required|numeric',
+            'satuan' => 'required',
+            'kategori_id' => 'required',
+            'gudang_id' => 'required',
+        ], $messages);
 
         barang::find($request->id)->update([
             'nama_barang' => $request->nama_barang,
@@ -116,6 +117,6 @@ class BarangController extends Controller
             'kategori_id' => $request->kategori_id,
             'gudang_id' => $request->gudang_id
         ]);
-        return redirect("/admin/Databarang")->with('success', 'Data Berhasil Diubah');
+        return redirect("/admin/Databarang")->with('edit', 'Data Berhasil Diubah');
     }
 }

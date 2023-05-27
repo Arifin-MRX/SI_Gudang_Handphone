@@ -18,6 +18,7 @@
                     <i class="bi bi-filetype-pdf"></i>
                     Export PDF
                 </button>
+                @include('kebutuhan.alert')
                 <div class="table-responsive">
                     <table class="table ">
                         <thead class="table-primary">

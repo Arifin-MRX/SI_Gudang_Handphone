@@ -28,4 +28,9 @@ class barang extends Model
     {
         return $this->belongsTo(gudang::class, 'gudang_id');
     }
+    // Relasi one-to-many antara model barang dan sirkulasi_barang
+    public function sirkulasi_barangs()
+    {
+        return $this->hasMany(sirkulasi_barang::class, 'id_barang');
+    }
 }

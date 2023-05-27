@@ -25,6 +25,7 @@
             @csrf
             <img src="{{ asset('assets/gudang1.png') }}" alt="gambar" style="height: 170px">
             <h1 class="mb-4 text-center">Registration</h1>
+            @include('kebutuhan.alert')
             <div class="mb-3">
                 <Label for="exampleInputname" class="form-label">
                     Nama
@@ -62,7 +63,7 @@
                     id="exampleInputPassword1">
             </div>
             <input type="hidden" id="exampleInputname" name="pegawai_id" class="form-control border-primary-subtle "
-                value="1">
+                value="5">
             {{--  --}}
             {{-- <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
@@ -75,7 +76,7 @@
             <div class="button m-auto ">
                 <button type="submit" class="btn btn-primary mb-5 mt-2">Registration</button>
             </div>
-            <p class="mt-4">not a member? <a href="#">Sign up now</a></p>
+            <p class="mt-4" ><a href="/login" class="text-decoration-none"><-Login</a></p>
         </form>
     </section>
 </body>

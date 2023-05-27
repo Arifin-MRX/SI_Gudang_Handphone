@@ -10,14 +10,11 @@
                         value="{{ old('cari') }}">
                     <input type="submit" value="CARI" class="btn btn-primary">
                 </form>
-                {{-- <button type="button" class="btn btn-success my-4 mx-3">
-                    <a class="text-decoration-none text-light" href="#"><i class="fa-solid fa-print"></i> Export
-                        Excel</a>
-                </button> --}}
                 <button type="button" class="btn btn-outline-danger mx-3 my-3">
                     <i class="bi bi-filetype-pdf"></i>
                     Export PDF
                 </button>
+                @include('kebutuhan.alert')
                 <div class="table-responsive">
                     <table class="table ">
                         <thead class="table-primary">
