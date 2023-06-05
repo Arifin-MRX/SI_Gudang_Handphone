@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        
         Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
-            $table->integer('kode_pesanan')->nullable();
+            $table->string('kode_pesanan')->nullable();
             $table->unsignedBigInteger('id_barang');
             $table->foreign('id_barang')->references('id')->on('barangs');
             $table->integer('total_harga');

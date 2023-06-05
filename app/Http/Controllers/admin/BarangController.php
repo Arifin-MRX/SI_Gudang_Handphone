@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\barang;
 use App\Models\gudang;
 use App\Models\kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Termwind\Components\Dd;
 
 class BarangController extends Controller
 {
+    
     //Menampilkan data Barang 
     function index()
     {
-        // $barangs = DB::table('barangs')->paginate(10);
         $barangs = barang::paginate(10);
         $kategoris = kategori::all();
         $gudangs = gudang::all();
@@ -84,9 +82,9 @@ class BarangController extends Controller
         return view('admin.barang.Databarang', $data);
     }
     // Menghapus data Barang
-    function delete($id)
+    function delete(Request $id)
     {
-        $barangs = barang::find($id);
+        $barangs = barang::find($id->id);
         // Hapus semua data sirkulasi barang terkait
         $barangs->sirkulasi_barangs()->delete();
         $barangs->delete();

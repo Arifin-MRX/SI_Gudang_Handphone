@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 use App\Models\jadwal_pengiriman;
 use Illuminate\Http\Request;
@@ -57,9 +58,9 @@ class JadwalPengirimanController extends Controller
         return redirect('/admin/jadwalpengiriman')->with('edit', 'Data Berhasil Diupdate');
     }
     // delete jadwal pengiriman
-    function delete($id)
+    function delete(Request $id)
     {
-        $jadwalpengiriman = jadwal_pengiriman::find($id);
+        $jadwalpengiriman = jadwal_pengiriman::find($id->id);
         $jadwalpengiriman->delete();
         return redirect('/admin/jadwalpengiriman')->with('delete', 'Data Berhasil Dihapus');
     }

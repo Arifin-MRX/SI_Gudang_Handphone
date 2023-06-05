@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\pengguna;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\pegawai;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,9 +57,6 @@ class PegawaiController extends Controller
         ], $messages);
         // membuat data pengguna
         $requestData = $request->all();
-        if ($requestData['pegawai_id'] == 5) {
-            $requestData['status'] = 'Belum Terkonfirmasi';
-        }
         $pengguna = User::find($request->id);
         $pengguna->update($requestData);
         return redirect('/admin/pegawai')->with('edit', 'Data User Berhasil Diubah');
@@ -70,7 +68,7 @@ class PegawaiController extends Controller
          $pengguna = User::find($request->id);
          $pengguna->status = 'Belum Terkonfirmasi';
          $pengguna->update();
-         return redirect('/admin/pegawai')->with('Delete', 'Data Pegawai Berhasil Dihapus');
+         return redirect('/admin/pegawai')->with('delete', 'Data Pegawai Berhasil Dihapus');
     }
     // search data pengguna
     function search(Request $request)

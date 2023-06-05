@@ -24,4 +24,13 @@ class outlet extends Model
     {
         return $this->belongsTo(User::class, 'id_pengguna', 'id');
     }
+    // relasi pemesanan dengan outlet
+    public function pemesanan()
+    {
+        return $this->hasMany(Pemesanan::class, 'id_outlet', 'id');
+    }
+    public function penerimaanBarang()
+    {
+        return $this->hasMany(PenerimaanBarang::class, 'id_outlet', 'id');
+    }
 }

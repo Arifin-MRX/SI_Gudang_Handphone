@@ -17,12 +17,12 @@
 
 <body>
     {{-- sidebar --}}
-    <div class="container-fluid bg-dark sidebar ">
+    <div class="container-fluid  sidebar " style="background-color: rgba(238, 238, 238, 0.2);">
         <div class="row flex-nowrap ">
-            <div class="bg-dark col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between ">
-                <div class="bg-dark p-2 mb-5 ml-3 flex-1 m-auto mt-0">
+            <div class=" col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between ">
+                <div class=" p-2 mb-5 ml-3 flex-1 m-auto mt-0">
                     <a class="d-flex text-decoration-none m-1 align-items-center " href="#">
-                        <img src="{{ asset('assets/Gudang-3.png') }}" alt="LogoGudang" width="190px">
+                        <img src="{{ asset('assets/Gudang-2.png') }}" alt="LogoGudang" width="190px">
                     </a>
                     <ul class="nav nav-pills flex-column mt-5">
                         <li class="nav-item py-2 py-sm-0  ">
@@ -39,22 +39,8 @@
         </div>
     </div>
     {{-- navbar --}}
-    <nav class="navbar bg-body-tertiary position-fixed ">
-        <div class="container-fluid">
-            <a class="navbar-brand"> </a>
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle pr-4" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    {{ Auth::user()->nama_pengguna }}
-                </a>
-                <ul class="dropdown-menu p-4 ">
-                    <li><a class="dropdown-item rounded" href="#">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Log out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+     {{-- navbar --}}
+     @include('kebutuhan.nav')
     {{-- konten --}}
     <div class="content">
         <div class="container">

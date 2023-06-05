@@ -7,14 +7,15 @@
                     Selamat Datang {{ Auth::user()->nama_pengguna }}
                 </h6>
             </div>
-            <form action="#" class="d-flex m-2 mt-4 justify-content-end" >
+            <form action="{{ route('dashboard.search') }}" class="d-flex m-2 mt-4 justify-content-end" id="search-form"
+                method="POST">
                 {{-- Lacak pengiriman --}}
+                @csrf
                 <div class="d-flex ">
-                    <input type="text" class="form-control" placeholder="Lacak Pengiriman...">
-                    <button type="submit" class="btn btn-outline-primary mx-2" data-bs-toggle="modal"
+                    <input class=" form-control" type="text" name="search" placeholder="Cari Barang .."
+                        value="{{ old('search') }}">
+                    <input type="submit" value="search" class="btn btn-outline-primary mx-2" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
-                        Cari
-                    </button>
                 </div>
             </form>
             <div class="row   flex-wrap mt-4 ">
@@ -25,8 +26,7 @@
                         </h3>
                         <div class="icon">
                             <p class="fs-1 ">
-                                <span class="p-3">100</span><i class="bi bi-bag-check-fill "
-                                    style="color: #89919f;"></i>
+                                <span class="p-3">{{$jumlahsudahterima}}</span><i class="bi bi-bag-check-fill " style="color: #89919f;"></i>
                             </p>
                         </div>
                     </div>
@@ -38,8 +38,7 @@
                         </h3>
                         <div class="icon">
                             <p class="fs-1 ">
-                                <span class="p-3">100</span><i class="bi bi-bag-x-fill "
-                                    style="color: #89919f;"></i>
+                                <span class="p-3">{{$jumlahbelumterima}}</span><i class="bi bi-bag-x-fill " style="color: #89919f;"></i>
                             </p>
                         </div>
                     </div>
@@ -51,8 +50,7 @@
                         </h3>
                         <div class="icon">
                             <p class="fs-1 ">
-                                <span class="p-3">100</span><i class="bi bi-cart-fill "
-                                    style="color: #89919f;"></i>
+                                <span class="p-3">{{$jumlahpesanan}}</span><i class="bi bi-cart-fill " style="color: #89919f;"></i>
                             </p>
                         </div>
                     </div>
@@ -61,59 +59,75 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="steeper">
-                        <div class="container mt-3">
-                            <div
-                                class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between mt-3 padding-bottom-1x">
-                                <div class="step completed d-block w-100 text-center mb-4">
-                                    <div class="step-icon-wrap d-block position-relative w-100 text-center">
-                                        <div class="step-icon d-inline-block position-relative">
-                                            <i class="fa-solid fa-address-card"></i>
+    @foreach ($pemesanan as $item)
+        <div class="modal fade" id="exampleModal-{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            @include('kebutuhan.style_modalLacakPengiriman')
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="modal-title" id="exampleModalLabel">Status Pengiriman : {{ $item->kode_pesanan }}
+                                </h5>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Nama Barang : {{ $item->barangs->nama_barang }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="steps">
+                                        {{-- <div class="step completed "> --}}
+                                        <div class="step @if (
+                                            $item->status == 'Sedang Diproses' ||
+                                                $item->status == 'Dalam Pengiriman' ||
+                                                $item->status == 'Dalam Perjalanan menuju tujuan' ||
+                                                $item->status == 'Sampai di tujuan') completed @endif">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="fas fa-check"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Dikonfirmasi</h4>
+                                        </div>
+                                        <div class="step @if (
+                                            $item->status == 'Dalam Pengiriman' ||
+                                                $item->status == 'Dalam Perjalanan menuju tujuan' ||
+                                                $item->status == 'Sampai di tujuan') completed @endif">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Dalam Pengiriman</h4>
+                                        </div>
+                                        <div class="step @if ($item->status == 'Dalam Perjalanan menuju tujuan' || $item->status == 'Sampai di tujuan') completed @endif">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="bi bi-house-door-fill"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Dalam perjalanan menuju tujuan</h4>
+                                        </div>
+                                        <div class="step @if ($item->status == 'Sampai di tujuan') completed @endif">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="fas fa-box"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Produk Diterima</h4>
                                         </div>
                                     </div>
-                                    <h4 class="step-title mt-3 mb-0">
-                                        1. Contact details
-                                    </h4>
-                                </div>
-                                <div class="step completed d-block w-100 text-center mb-4">
-                                    <div class="step-icon-wrap d-block position-relative w-100 text-center">
-                                        <div class="step-icon d-inline-block position-relative">
-                                            <i class="fa-solid fa-truck-fast"></i>
-                                        </div>
-                                    </div>
-                                    <h4 class="step-title mt-3 mb-0">
-                                        2. Shipping method
-                                    </h4>
-                                </div>
-                                <div class="step d-block w-100 text-center mb-4">
-                                    <div class="step-icon-wrap d-block position-relative w-100 text-center">
-                                        <div class="step-icon d-inline-block position-relative">
-                                            <i class="step.icon"></i>
-                                            <i class="fa-solid fa-credit-card text-secondary"></i>
-                                        </div>
-                                    </div>
-                                    <h4 class="step-title mt-3 mb-0">
-                                        3. Payment
-                                    </h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        {{-- <button type="button" class="btn btn-primary">Simpan</button> --}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    {{-- modal end --}}
+    @endforeach
+    @include('kebutuhan.script_modalLacakPengiriman')
 @endsection

@@ -18,5 +18,8 @@ class supir extends Model
     {
         return $this->belongsTo(User::class, 'id_pengguna', 'id');
     }
-    
+    public function pengiriman()
+    {
+        return $this->hasMany(pengiriman::class, 'id_supir', 'id');
+    }
 }

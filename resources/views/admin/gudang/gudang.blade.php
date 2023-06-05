@@ -2,73 +2,78 @@
 @section('content')
     <div class="container">
         <div class="tb-gudang  ">
-            <div class="col border rounded p-2 ">
-                <h3 class="my-3 text-center ">DATA GUDANG</h3>
-                <p>Cari Data Gudang:</p>
-                <form class="d-flex" action="{{route('gudang.search')}}" method="GET">
-                    <input class=" form-control" type="text" name="search" placeholder="Cari Gudang .."
-                        value="{{ old('search') }}">
-                    <input type="submit" value="search" class="btn btn-outline-primary mx-2">
-                </form>
-                <button type="button" class="btn btn-outline-primary my-4" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-person-add" viewBox="0 0 16 16">
-                        <path
-                            d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z">
-                        </path>
-                        <path
-                            d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z">
-                        </path>
-                    </svg>
-                    Tambah Data
-                </button>
-                <button type="button" class="btn btn-outline-danger">
-                    <i class="bi bi-filetype-pdf"></i>
-                    Export PDF
-                </button>
-                @include('kebutuhan.alert')
-                <div class="table-responsive rounded">
-                    <table class="table ">
-                        <thead class="table-primary">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama Gudang</th>
-                                <th scope="col">Alamat</th>
-                                <th scope="col" style="width: 300px;">Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            @if ($gudangs->isEmpty())
+            <div
+                style="border-style: dashed; border-color:#537fe7; padding:4px 20px 230px;overflow:auto; max-height: 700px;">
+                <div class="col border rounded p-3 mt-3 ">
+                    <h3 class="my-3 text-center ">DATA GUDANG</h3>
+                    <p>Cari Data Gudang:</p>
+                    <form class="d-flex" action="{{ route('gudang.search') }}" method="GET">
+                        <input class=" form-control" type="text" name="search" placeholder="Cari Gudang .."
+                            value="{{ old('search') }}">
+                        <input type="submit" value="search" class="btn btn-outline-primary mx-2">
+                    </form>
+                    <button type="button" class="btn btn-outline-primary my-4" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-person-add" viewBox="0 0 16 16">
+                            <path
+                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z">
+                            </path>
+                            <path
+                                d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z">
+                            </path>
+                        </svg>
+                        Tambah Data
+                    </button>
+                    <a href="{{route('exportgudang')}}">
+                        <button type="button" class="btn btn-outline-danger">
+                            <i class="bi bi-filetype-pdf"></i>
+                            Export PDF
+                        </button>
+                    </a>
+                    @include('kebutuhan.alert')
+                    <div class="table-responsive rounded">
+                        <table class="table ">
+                            <thead class="table-primary">
                                 <tr>
-                                    <td colspan="4" class="text-center">Data tidak ditemukan.</td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama Gudang</th>
+                                    <th scope="col">Alamat</th>
+                                    <th scope="col" style="width: 300px;">Opsi</th>
                                 </tr>
-                            @endif
-                            @foreach ($gudangs as $g)
-                                <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $g->nama_gudang }}</td>
-                                    <td>{{ $g->alamat }}</td>
-                                    <td>
-                                        {{-- button edit --}}
-                                        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModalEdit{{ $g->id }}">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        {{-- btn hapus --}}
-                                        <button type="button" class="btn btn-outline-danger">
-                                            <a class="text-decoration-none text-body"
-                                                href="{{ route('gudang.delete', ['id' => $g->id]) }}">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @if ($gudangs->isEmpty())
+                                    <tr>
+                                        <td colspan="4" class="text-center">Data tidak ditemukan.</td>
+                                    </tr>
+                                @endif
+                                @foreach ($gudangs as $g)
+                                    <tr>
+                                        <th scope="row">{{ $loop->index + 1 }}</th>
+                                        <td>{{ $g->nama_gudang }}</td>
+                                        <td>{{ $g->alamat }}</td>
+                                        <td>
+                                            {{-- button edit --}}
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalEdit{{ $g->id }}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            {{-- btn hapus --}}
+                                            <button type="button" class="btn btn-outline-danger">
+                                                <a class="text-decoration-none text-body"
+                                                    href="{{ route('gudang.delete', ['id' => $g->id]) }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    {{ $gudangs->links('pagination::bootstrap-5') }}
                 </div>
-                {{ $gudangs->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>

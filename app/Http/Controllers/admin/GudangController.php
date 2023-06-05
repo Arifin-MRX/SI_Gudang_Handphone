@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\gudang;
 // use PDF;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class GudangController extends Controller
 {
 
-    function index()
+    function tampilan()
     {
         $gudangs = gudang::paginate(10);
         return view('admin.gudang.gudang', ['gudangs' => $gudangs]);
@@ -59,9 +60,9 @@ class GudangController extends Controller
         return redirect("/admin/gudang")->with('edit', 'Data Berhasil Diubah');
     }
     // hapus data gudang
-    function delete($id)
+    function delete(Request $id)
     {
-        gudang::find($id)->delete();
+        gudang::find($id->id)->delete();
         return redirect("/admin/gudang")->with('delete', 'Data Berhasil Dihapus');
     }
     // search data gudang

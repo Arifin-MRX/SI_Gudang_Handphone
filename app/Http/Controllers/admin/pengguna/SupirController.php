@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\admin\pengguna;
 
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\outlet;
 use App\Models\pegawai;
 use App\Models\User;
 use App\Models\supir;
@@ -104,5 +106,33 @@ class SupirController extends Controller
         } 
 
         return view('admin.dataPengguna.supir.Datasupir', $data);
+    }
+    function update(Request $request)
+    {
+        // membuat pesan validasi
+        $messages = [
+            'required' => ':attribute wajib diisi',
+            'min' => ':attribute minimal :min karakter',
+            'max' => ':attribute maksimal :max karakter',
+            'numeric' => ':attribute harus berupa angka'
+        ];
+        // validasi data
+        $this->validate($request, [
+            'nama_pengguna' => 'required|min:5',
+            'username' => 'required|min:5',
+            'tlp' => 'required|min:11|numeric',
+            'alamat' => 'required|min:5',
+            'email' => 'required',
+        ], $messages);
+        // Mendapatkan data pengguna yang akan diubah
+        $pengguna = User::find($request->id_pengguna);
+        
+        // membuat data pengguna
+        $requestData = $request->all();
+        // if ($requestData['pegawai_id'] == 5) {
+        //     $requestData['status'] = 'Belum Terkonfirmasi';
+        // }
+        $pengguna->update($requestData);
+        return redirect('/admin/supir')->with('edit', 'Data User Berhasil Diubah');
     }
 }

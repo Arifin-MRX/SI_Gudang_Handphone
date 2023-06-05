@@ -61,4 +61,9 @@ class LoginController extends Controller
             'email' => 'maaf username atau password salah',
         ])->onlyInput('email');
     }
+    function logout()
+    {
+        Auth::logout();
+        return redirect('/login');
+    }
 }

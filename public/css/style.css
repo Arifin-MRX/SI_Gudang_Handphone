@@ -1,16 +1,20 @@
 .nav-pills li a:hover {
     background-color: #407bff;
+    color:#ffffff;
+}
+.nav-pills li a {
+    color: #407bff;
 }
 .dropdown-menu li a:hover {
     background-color: #407bff;
 }
 nav .dropdown-menu.show {
-    margin-left: -75px !important;
+    margin-left: -105px !important;
 }
 nav {
     margin-top: 0px;
     width: 86% !important;
-    padding-top: 50px !important;
+    padding-top: 40px !important;
 }
 
 .sidebar {
@@ -35,7 +39,7 @@ nav {
 }
 .navbar {
     position: absolute;
-    margin-left: 210px;
+    margin-left: 230px;
     margin-top: -80px;
     padding: 20px;
 }
@@ -63,7 +67,7 @@ nav {
 .tb_pemesanan,
 .tb_sirkulasi,
 .tb-Truk {
-    padding-left: 15rem;
+    padding-left: 13rem;
     padding-top: 2rem;
     justify-content: center;
 }

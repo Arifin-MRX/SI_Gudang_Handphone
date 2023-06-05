@@ -16,6 +16,4 @@ class gudang extends Model
     {
         return $this->hasMany(barang::class);
     }
-    
-
 }

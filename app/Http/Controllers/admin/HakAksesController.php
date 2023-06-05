@@ -25,9 +25,9 @@ class HakAksesController extends Controller
         return redirect('/admin/hakAkses')->with('success', 'Data Berhasil Ditambahkan');
     }
     // menghapus data hak akses
-    function delete($id)
+    function delete(Request $id)
     {
-        $hakakses = pegawai::find($id);
+        $hakakses = pegawai::find($id->id);
         $hakakses->delete();
         return redirect('/admin/hakAkses')->with('success', 'Data Berhasil Dihapus');
     }

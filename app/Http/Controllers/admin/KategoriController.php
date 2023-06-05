@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +15,7 @@ class KategoriController extends Controller
     // menampilkan data kategori
     function index()
     {
-        $kategoris = kategori::paginate(10);
+        $kategoris = kategori::paginate(5);
         return view('admin.barang.kategori', ['kategoris' => $kategoris]);
     }
     // menambah kategori
@@ -26,18 +28,12 @@ class KategoriController extends Controller
         ];
         // validasi data
         $this->validate($request, [
-            'nama_kategori' => 'required|min:5',
+            'nama_kategori' => 'required',
         ], $messages);
         Kategori::create([
             'nama_kategori' => $request->nama_kategori
         ]);
         return redirect('/admin/kategori')->with('success', 'Data Berhasil Ditambahkan');
-    }
-    /// Edit data kategori
-    function edit($id)
-    {
-        $kategoris = DB::table('kategoris')->where('id', $id)->get();
-        return view('admin.barang.kategori', ['kategoris' => $kategoris]);
     }
 
     // update data kategori
@@ -58,16 +54,23 @@ class KategoriController extends Controller
         return redirect("/admin/kategori")->with('edit', 'Data Berhasil Diubah');
     }
     // hapus data kategori
-    function delete($id)
+    function delete(Request $id)
     {
-        Kategori::find($id)->delete();
+        Kategori::find($id->id)->delete();
         return redirect("/admin/kategori")->with('delete', 'Data Berhasil Dihapus');
     }
     // search data kategori
     function search(Request $request)
     {
         $search = $request->search;
-        $kategoris = DB::table('kategoris')->where('nama_kategori', 'like', '%' . $search . '%')->paginate(10);
+        $kategoris = DB::table('kategoris')->where('nama_kategori', 'like', '%' . $search . '%')->paginate(5);
         return view('admin.barang.kategori', ['kategoris' => $kategoris]);
+    }
+    // cetak data kategori
+    function cetak()
+    {
+        $kategoris = kategori::all();
+        $pdf = PDF::loadview('admin.barang.kategori_pdf', ['kategoris' => $kategoris]);
+        return $pdf->download('laporan-kategori-pdf');
     }
 }

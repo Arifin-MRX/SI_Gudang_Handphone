@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('rutes', function (Blueprint $table) {
             $table->id();
             $table->String('status')->nullable();
-            $table->unsignedBigInteger('id_pengiram');
-            $table->foreign('id_pengiram')->references('id')->on('pengirimen');
+            $table->unsignedBigInteger('id_pengiriman');
+            $table->foreign('id_pengiriman')->references('id')->on('pengirimen');
             $table->timestamps();
         });
     }

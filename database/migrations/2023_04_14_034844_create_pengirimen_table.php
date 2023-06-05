@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('pengirimen', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal')->nullable();
             $table->unsignedBigInteger('id_truk');
             $table->foreign('id_truk')->references('id')->on('truks');
             $table->unsignedBigInteger('id_supir');

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('penerima_barangs', function (Blueprint $table) {
             $table->id();
             $table->date('Tanggal')->nullable();
-            $table->unsignedBigInteger('id_sirkulasi');
-            $table->foreign('id_sirkulasi')->references('id')->on('sirkulasi_barangs');
+            // $table->unsignedBigInteger('id_sirkulasi');
+            // $table->foreign('id_sirkulasi')->references('id')->on('sirkulasi_barangs');
             $table->unsignedBigInteger('id_outlet');
             $table->foreign('id_outlet')->references('id')->on('outlets');
             $table->unsignedBigInteger('id_pengiriman');

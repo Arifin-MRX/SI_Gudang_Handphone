@@ -17,7 +17,7 @@
             <h1 class="mb-4 text-center">Log In</h1>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control 
+                <input autocomplete="off" type="email" class="form-control 
                 {{-- Jika ada error --}}
                 @error('email')
                     is-invalid

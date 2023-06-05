@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\truk;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TrukController extends Controller
 {
@@ -58,9 +59,9 @@ class TrukController extends Controller
         return redirect("/admin/truk")->with('edit', 'Data Berhasil Diubah');
     }
     // hapus data truk
-    function delete($id)
+    function delete(Request $id)
     {
-        truk::find($id)->delete();
+        truk::find($id->id)->delete();
         return redirect("/admin/truk")->with('delete', 'Data Berhasil Dihapus');
     }
     // search data truk

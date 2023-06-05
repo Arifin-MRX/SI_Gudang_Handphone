@@ -14,4 +14,8 @@ class truk extends Model
         'plat_nomor',
         'kapasitas',
     ];
+    public function pengiriman()
+    {
+        return $this->hasMany(pengiriman::class, 'id_truk', 'id');
+    }
 }

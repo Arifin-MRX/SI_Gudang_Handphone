@@ -1,24 +1,18 @@
 @extends('outlet.master')
 @section('content')
-    <div class="container">
-        <div class="tb-gudang  ">
-            <div class="col border rounded p-2 ">
+<div class="container">
+    <div class="tb-gudang  ">
+        <div style="border-style: dashed; border-color:#537fe7; padding:4px 20px 230px;overflow:auto; max-height: 700px;">
+            <div class="col border rounded p-2 mt-2">
                 <h3 class="my-3 text-center ">DATA BARANG</h3>
                 <p>Cari Data Barang:</p>
-                <form class="d-flex" action="/pegawai/cari" method="GET">
-                    <input class=" form-control" type="text" name="cari" placeholder="Cari Barang .."
-                        value="{{ old('cari') }}">
-                    <input type="submit" value="CARI" class="btn btn-outline-primary mx-2">
+                <form class="d-flex" action="{{ route('barang.cari') }}" method="get">
+                    <input class=" form-control" type="text" name="search" placeholder="Cari Barang .."
+                        value="{{ old('search') }}">
+                    <input type="submit" value="search" class="btn btn-outline-primary mx-2">
                 </form>
-                {{-- <a href="#" class="btn btn-primary  mb-4 mt-4">+ Tambah Data Gudang </a> --}}
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-outline-primary my-4"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="bi bi-bag-plus-fill"></i> 
-                    <a href="/outlet/dashboard" class="text-decoration-none">
-                        Pesan Barang
-                    </a>
-                </button>
-                <div class="table-responsive">
+                @include('kebutuhan.alert')
+                <div class="table-responsive mt-5 ">
                     <table class="table ">
                         <thead class="table-primary">
                             <tr>
@@ -28,26 +22,38 @@
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Kategori</th>
                                 <th scope="col">Gudang</th>
-                                {{-- <th scope="col">Stok Awal</th>
-                                <th scope="col">Stok Masuk</th>
-                                <th scope="col">Stok Keluar</th> --}}
                                 <th scope="col">Jumlah Stok</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>OPPO</td>
-                                <td>1000000</td>
-                                <td>pcs</td>
-                                <td>OPPO</td>
-                                <td>tes</td>
-                                <td>100</td>
-                            </tr>
+                            @if ($barangs->isEmpty())
+                                <tr>
+                                    <td colspan="8" class="text-center">Data tidak ditemukan.</td>
+                                </tr>
+                            @endif
+                            @foreach ($barangs as $b)
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $b->nama_barang }}</td>
+                                    <td>{{ $b->harga }}</td>
+                                    <td >{{ $b->satuan }}</td>
+                                    <td>
+                                        {{-- Menampilka nama kategori sesuai  dengan id --}}
+                                        {{ $b->kategoris->nama_kategori }}
+                                    </td>
+                                    <td>
+                                        {{-- Menampilka nama gudang sesuai  dengan id --}}
+                                        {{ $b->gudangs->nama_gudang }}
+                                    </td>
+                                    <td class="text-center">{{ $b->stok_akhir }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
+                {{ $barangs->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
+</div>
 @endsection

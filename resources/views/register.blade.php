@@ -53,7 +53,7 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" name="email" class="form-control border-primary-subtle"
+                <input type="email" name="email" autocomplete="off" class="form-control border-primary-subtle"
                     placeholder="arifin@kangean.co.id" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text ">We'll never share your email with anyone else.</div>
             </div>
@@ -62,21 +62,27 @@
                 <input type="password" name="password" class="form-control border-primary-subtle"
                     id="exampleInputPassword1">
             </div>
-            <input type="hidden" id="exampleInputname" name="pegawai_id" class="form-control border-primary-subtle "
-                value="5">
-            {{--  --}}
-            {{-- <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control border-primary-subtle" id="exampleInputPassword1">
-            </div> --}}
-            {{-- <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label " for="exampleCheck1">Check me out</label>
-            </div> --}}
+
+            <div class="mb-3">
+                <label for="pegawai_id" class="form-label">Masukkan
+                    Hak Akses</label>
+                <select name="pegawai_id" id="pegawai_id" class="form-control">
+                    <option value=""> Pilih Hak Akses</option>
+                    @foreach ($hakakses as $item)
+                    {{-- Cek apakah ID bukan 1 --}}
+                        @if ($item->id != 1 )
+                            <option value="{{ $item->id }}">{{ $item->hakakses }}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+            
             <div class="button m-auto ">
                 <button type="submit" class="btn btn-primary mb-5 mt-2">Registration</button>
             </div>
-            <p class="mt-4" ><a href="/login" class="text-decoration-none"><-Login</a></p>
+            <p class="mt-4"><a href="/login" class="text-decoration-none">
+                    <-Login< /a>
+            </p>
         </form>
     </section>
 </body>

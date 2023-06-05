@@ -5,21 +5,16 @@
             <div class="col border rounded p-2 ">
                 <h3 class="my-3 text-center ">DATA RUTE</h3>
                 <p>Cari Kode Pengiriman:</p>
-                <form class="d-flex" action="/supir/cari" method="GET">
-                    <input class=" form-control" type="text" name="cari" placeholder="Cari Kode Pengiriman .."
-                        value="{{ old('cari') }}">
-                    <input type="submit" value="CARI" class="btn btn-outline-primary mx-2">
+                <form class="d-flex" action="{{ route('rute.search') }}" method="GET">
+                    <input class=" form-control" type="text" name="search" placeholder="Cari Kode Pengiriman .."
+                        value="{{ old('search') }}">
+                    <input type="submit" value="search" class="btn btn-outline-primary mx-2">
                 </form>
-                <button type="button" class="btn btn-outline-primary my-4 mx-3 "data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                    <i class="bi bi-person-add"></i> Tambah Rute</a>
-                </button>
-                <button type="button" class="btn btn-outline-danger my-4 mx-3">
+                {{-- <button type="button" class="btn btn-outline-danger my-4 mx-3">
                     <i class="bi bi-filetype-pdf"></i>
                     Export PDF
-                </button>
-                @include('kebutuhan.alert')
-                <div class="table-responsive">
+                </button> --}}
+                <div class="table-responsive mt-3">
                     <table class="table ">
                         <thead class="table-primary">
                             <tr>
@@ -30,57 +25,88 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>KPN-001</td>
-                                <td> Dalam Perjalanan menuju tujuan</td>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-warning">
-                                        <a class="text-decoration-none text-black" href="#">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger">
-                                        <a class="text-decoration-none text-black" href="#">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach ($rute as $group)
+                                @php
+                                    $item = $group->first();
+                                @endphp
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $item->pengiriman->pemesanan->kode_pesanan }}</td>
+                                    <td>
+                                        {{ $item->status }}
+                                    </td>
+                                    <td>
+                                        <!-- Button untuk membuka modal edit status -->
+                                        <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{ $item->pengiriman->pemesanan->kode_pesanan }}">
+                                            <a class="text-decoration-none text-black" href="#">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        </button>
+                                        @if ($item->pengiriman->pemesanan->kode_pesanan)
+                                            <!-- Modal Edit Status -->
+                                            <div class="modal fade"
+                                                id="editModal{{ $item->pengiriman->pemesanan->kode_pesanan }}"
+                                                tabindex="-1"
+                                                aria-labelledby="editModalLabel{{ $item->pengiriman->pemesanan->kode_pesanan }}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="editModalLabel{{ $item->pengiriman->pemesanan->kode_pesanan }}">
+                                                                Edit
+                                                                Status Pengiriman</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- Form edit status -->
+                                                            <form action="{{ route('rute.update') }}" method="POST">
+                                                                @csrf
+                                                                <!-- Isi form dengan data status yang ingin diubah -->
+                                                                <input type="hidden" name="kode_pesanan"
+                                                                    value="{{ $item->pengiriman->pemesanan->kode_pesanan }}">
+                                                                <div class="mb-3">
+                                                                    <label for="status" class="form-label">Status
+                                                                        Pengiriman</label>
+                                                                    <select class="form-select" id="status"
+                                                                        name="status">
+                                                                        <option value="Dalam Perjalanan menuju tujuan"
+                                                                            {{ $item->status == 'Dalam Perjalanan menuju tujuan' ? 'selected' : '' }}>
+                                                                            Dalam Perjalanan menuju tujuan</option>
+                                                                        <option value="Sampai di tujuan"
+                                                                            {{ $item->status == 'Sampai di tujuan' ? 'selected' : '' }}>
+                                                                            Sampai di tujuan</option>
+                                                                        <option value="Batal"
+                                                                            {{ $item->status == 'Batal' ? 'selected' : '' }}>
+                                                                            Batal</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- Tombol Submit -->
+                                                                <button type="submit" class="btn btn-primary">Simpan
+                                                                    Perubahan</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <!-- Button untuk menghapus data -->
+                                        {{-- <button type="button" class="btn btn-outline-danger">
+                                            <a class="text-decoration-none text-black"
+                                                href="{{ route('rute.delete', ['kode_pesanan' => $item->pengiriman->pemesanan->kode_pesanan]) }}">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </button> --}}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal start-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Rute</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('kategori.create') }}" method="POST">
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="kode" class="form-label">Kode Pengiriman</label>
-                            <input type="text" name="kode" class="form-control" id="kode">
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status Pengiriman</label>
-                            <input type="text" name="status" class="form-control" id="status">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-outline-primary" value="simpan data">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Modal end -->
 @endsection

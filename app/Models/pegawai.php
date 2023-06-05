@@ -18,4 +18,5 @@ class pegawai extends Model
     {
         return $this->hasMany(User::class, 'pegawai_id', 'id');
     }
+    
 }
